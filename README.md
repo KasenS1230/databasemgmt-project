@@ -18,10 +18,10 @@ Install the required packages inside the virtual environment
 
 Ensure the 'vet.db' file is present. In the case that it is not, please run these commands in order in your terminal:
 
-\`\`\`bash
+
 python init_db.py
 python insert_data.py
-\`\`\`
+
 
 # 5.
 
