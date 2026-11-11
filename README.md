@@ -20,6 +20,7 @@ Ensure the 'vet.db' file is present. In the case that it is not, please run thes
 
 
 python init_db.py
+
 python insert_data.py
 
 
