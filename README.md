@@ -1,50 +1,71 @@
 # databasemgmt-project · LSU-VET
 
-Vet clinic database (SQLite) + website. The website runs on **mock data** right now. It isn't connected to `vet.db` yet.
+A vet clinic database (SQLite, `vet.db`) and a 6-page website that reads and edits it.
 
-## Run it
+## Open the website
 
-Double-click `home.html`. Nothing to install.
+**Online (easiest):** https://kasens1230.github.io/databasemgmt-project/
 
-Edits save in your browser. **Reset demo data** (bottom left) undoes them.
-Switch users with **Signed in as** (top right).
+Nothing to install. It works in any modern browser.
 
-If `vet.db` is missing, rebuild it:
+**On your own computer:**
+
+1. Clone or download this repo.
+2. Open a terminal in the project folder and run:
+   ```
+   python -m http.server
+   ```
+   (Use `python3` on Mac/Linux or `py` on Windows if `python` isn't recognized.)
+3. Go to http://localhost:8000
+
+Opening the HTML files by double-clicking won't work. Browsers block pages opened that way from loading `vet.db`.
+
+## Using it
+
+- **Switch users** with **Signed in as** (top right). Each role sees different pages.
+- **Edit, add and delete** records on any page. Every change runs a real `INSERT`, `UPDATE` or `DELETE` on the database, and the change shows up on all pages.
+- **Reset demo data** (bottom left) undoes every change and reloads the original `vet.db`. Closing the tab does the same thing.
+
+The `vet.db` file in the repo is never changed by the website, so every visitor starts from the same data.
+
+## How it works
+
+The website uses [sql.js](https://sql.js.org) (SQLite compiled to JavaScript) to open `vet.db` inside the browser, so no server or backend is needed.
+
+1. **Load:** `js/db.js` downloads `vet.db`, runs a `SELECT` on each table, and gives the rows to the pages.
+2. **Save:** after each Save / New / Delete, `js/store.js` works out which rows changed and `applyChanges()` in `js/db.js` runs the matching SQL in one transaction, with foreign keys turned on.
+3. **Carry over:** the edited database is kept in the tab's `sessionStorage`, so all 6 pages see the same data until you reset or close the tab.
+
+`db.js` also converts dates between the two formats. The website uses `2026-07-01` and `2026-07-01T13:00`. `vet.db` uses `07-01-2026`, `07-01-2026 13:00:00`, and `04-12-20` for `pet.birth_date`.
+
+## Rebuild the database
+
+To recreate `vet.db` from scratch (for example, after changing the sample data):
 
 ```
+del vet.db          (Mac/Linux: rm vet.db)
 python init_db.py
 python insert_data.py
 ```
 
-## Connect it to vet.db
-
-Two spots to change. Both already use the real table and column names.
-
-**1. Load.** Pages read their data from `const DB = {...}` in `js/data.js` (mock data).
-Fill it with real rows from the `SELECT` queries in `queries.sql`.
-
-**2. Save.** `sendToDatabase(changes)` in `js/store.js` runs after every Save / New / Delete. Right now it only prints to the console (F12).
-Each change is one of:
-
-```js
-{ op: "insert", table: "pets", row: {...} }
-{ op: "update", table: "pets", key: { pet_id: 1 }, row: {...} }
-{ op: "delete", table: "pets", key: { pet_id: 1 } }
-```
-
-Run the matching `INSERT` / `UPDATE` / `DELETE` from `queries.sql`.
-
-**Names.** The website uses plural names. `pets` = `pet`, `clients` = `client`, and so on (`staff` and `administered` stay the same).
-
-**Dates.** The website uses `2020-04-12` and `2026-07-01T10:00`. `vet.db` uses `07-01-2026`, `07-01-2026 10:00:00`, and `04-12-20` for `pet.birth_date`. Convert both ways.
+Delete the old `vet.db` first. Otherwise the inserts fail because the rows already exist.
 
 ## Files
 
 ```
-init_db.py, insert_data.py   build vet.db
 vet.db                       the database
-queries.sql                  every SELECT / INSERT / UPDATE / DELETE, per table
-*.html, css/, js/            the website
-js/data.js                   mock data   ← replace with real data
-js/store.js                  saving      ← sendToDatabase()
+init_db.py                   creates the tables
+insert_data.py               fills them with sample data
+queries.sql                  the SELECT / INSERT / UPDATE / DELETE queries for each table
+
+index.html                   redirects to home.html
+home.html                    dashboard
+front-desk.html, schedule.html, clinical.html, billing.html, admin.html
+css/styles.css               styles
+
+js/db.js                     opens vet.db, loads the tables, saves changes
+js/store.js                  tracks edits and sends them to db.js
+js/data.js                   empty DB object, filled by db.js
+js/shell.js                  sidebar, role picker, reset button
+js/app.js, js/crud.js        page logic
 ```
