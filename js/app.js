@@ -371,7 +371,7 @@ function select(key, id) {
 }
 
 /* ---------- events ---------- */
-document.addEventListener("DOMContentLoaded", () => {
+dbReady.then(() => {
   $("#search").addEventListener("input", e => { state.query = e.target.value; renderGrid(); });
 
   $("#entityTabs").addEventListener("click", e => {

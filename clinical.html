@@ -17,10 +17,13 @@
 
   <div class="toast" id="toast" role="status"></div>
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+  <script src="js/db.js"></script>
   <script src="js/data.js"></script>
   <script src="js/store.js"></script>
   <script src="js/shell.js"></script>
   <script src="js/crud.js"></script>
-  <script>Workspace.mount("clinical");</script>
+  <script>dbReady.then(() => Workspace.mount("clinical"));</script>
 </body>
 </html>

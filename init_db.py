@@ -2,6 +2,7 @@ import sqlite3
 
 connect = sqlite3.connect('vet.db')
 cursor = connect.cursor()
+cursor.execute("PRAGMA foreign_keys = ON;")
 
 cursor.execute("""
     CREATE TABLE client (

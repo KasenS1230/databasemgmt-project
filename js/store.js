@@ -13,7 +13,7 @@
                insert / update / delete the user makes, one object per row.
    Nothing else in the frontend needs to change.
 ------------------------------------------------------------------- */
-(function () {
+dbReady.then(function () {
   const KEY = "lsuvet.db.v2";
   const clone = o => JSON.parse(JSON.stringify(o));
 
@@ -105,4 +105,4 @@
       try { localStorage.removeItem(KEY); } catch (_) { /* ignore */ }
     },
   };
-})();
+});

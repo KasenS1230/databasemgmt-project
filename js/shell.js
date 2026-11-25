@@ -129,7 +129,7 @@ function toast(msg) {
   toast._t = setTimeout(() => t.classList.remove("show"), 2600);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+dbReady.then(() => {
   document.querySelectorAll("[data-icon]").forEach(el => el.insertAdjacentHTML("afterbegin", icon(el.dataset.icon)));
   Shell.renderSidebar();
   Shell.renderRolePicker();
