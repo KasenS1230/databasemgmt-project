@@ -44,9 +44,12 @@ dbReady.then(function () {
          body: JSON.stringify({ ops: changes }),
        }).then(r => { if (!r.ok) throw new Error("Save failed"); });
      ================================================================ */
-  function sendToDatabase(changes) {
-    for (const c of changes) {
-      console.log(`[db] ${c.op.toUpperCase()} ${c.table}`, c.key || "", c.row || "");
+    function sendToDatabase(changes) {
+    try {
+      applyChanges(changes);
+    } catch (e) {
+      console.error(e);
+      toast("Database error: " + e.message);
     }
   }
 
@@ -63,13 +66,7 @@ dbReady.then(function () {
     ["payments", ["payment_no"]],
   ];
 
-  // Keep the original mock data for "Reset demo data", then restore any
-  // edits saved in this browser.
-  const SEED = clone(DB);
-  try {
-    const saved = JSON.parse(localStorage.getItem(KEY));
-    if (saved) for (const t of Object.keys(DB)) if (Array.isArray(saved[t])) DB[t] = saved[t];
-  } catch (_) { /* storage unavailable or corrupt: use the mock data */ }
+
   let snapshot = clone(DB);
 
   // Compare the last saved state with DB and list the row changes.
@@ -95,14 +92,11 @@ dbReady.then(function () {
     save() {
       const changes = diff();
       snapshot = clone(DB);
-      try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (_) { /* ignore */ }
       if (changes.length) sendToDatabase(changes);
     },
     // "Reset demo data": back to the mock data in js/data.js.
     reset() {
-      for (const t of Object.keys(SEED)) DB[t] = clone(SEED[t]);
-      snapshot = clone(DB);
-      try { localStorage.removeItem(KEY); } catch (_) { /* ignore */ }
+      clearSession();
     },
   };
 });
