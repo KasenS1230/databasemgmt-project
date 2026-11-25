@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LSU-VET · Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="schedule">
+  <!-- Sidebar is drawn by js/shell.js; main + form panel by js/crud.js -->
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar"></aside>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/crud.js"></script>
+  <script>Workspace.mount("schedule");</script>
+</body>
+</html>
