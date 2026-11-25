@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LSU-VET · Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="home">
+  <div class="app">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1>Home</h1>
+          <p>Who are you looking for today?</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" aria-label="Notifications" data-icon="bell"></button>
+          <button class="icon-btn" aria-label="Messages" data-icon="message"></button>
+          <div id="rolePicker"></div>
+        </div>
+      </header>
+
+      <label class="search">
+        <span data-icon="search"></span>
+        <input id="search" type="search" placeholder="Search staff, clients, pets, appointments, medications…" autocomplete="off" />
+      </label>
+
+      <div class="tabs" id="entityTabs" role="tablist"></div>
+
+      <div class="section-head">
+        <div>
+          <h2 id="sectionTitle">All records</h2>
+          <span id="resultCount" class="count"></span>
+        </div>
+        <div class="filters" id="filters"></div>
+      </div>
+
+      <section class="grid" id="grid" aria-live="polite"></section>
+    </main>
+
+    <!-- ============ DETAIL PANEL ============ -->
+    <aside class="detail" id="detail"></aside>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
